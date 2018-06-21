@@ -1,8 +1,15 @@
 #!bin/bash
 #create vnc password
-printf "123456\n123456\n\n" | vncpasswd /etc/x0vncpass
+if [[ -z "$VNC_PWD" ]];then
+	VNC_PWD="123456"
+else
+	VNC_PWD="123456"
+fi
 
 
+printf "$VNC_PWD\n$VNC_PWD\n\n" | vncpasswd /etc/x0vncpass
+
+#query nvidia info for generate X11 config
 nvidia-smi -x -q > /nvidia-smi-log.xml
 GPU_NUM=$(xmllint  -xpath "string(/nvidia_smi_log/attached_gpus)" /nvidia-smi-log.xml)
 PCI_BUS_ID=$(xmllint  -xpath "string(/nvidia_smi_log/gpu/@id)" /nvidia-smi-log.xml)
