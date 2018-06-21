@@ -33,15 +33,6 @@ spec:
             labels:
                 app: xfce4
         spec:
-            affinity:
-                nodeAffinity:
-                  requiredDuringSchedulingIgnoredDuringExecution:
-                    nodeSelectorTerms:
-                    - matchExpressions:
-                      - key: kubernetes.io/hostname
-                        operator: In
-                        values:
-                        - 172.16.0.37
             containers:
                 - image: rumia/centos-xfce4:1.0
                   imagePullPolicy: IfNotPresent
