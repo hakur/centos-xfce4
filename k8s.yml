@@ -1,0 +1,70 @@
+kind: Service
+apiVersion: v1
+metadata:
+    name: xfce4-vnc
+    labels: 
+        app: xfce4-vnc
+spec:
+    type: NodePort
+    ports:
+        - port: 5900
+          nodePort: 30059
+          targetPort: 5900
+          name: vnc-port
+    selector:
+        app: xfce4
+    
+---
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+    name: xfce4
+    labels: 
+        app: xfce4
+spec:
+    serviceName: xfce4-vnc
+    replicas: 1
+    selector: 
+        matchLabels:
+            app:  xfce4
+    template:
+        metadata: 
+            name: xfce4
+            labels:
+                app: xfce4
+        spec:
+            affinity:
+                nodeAffinity:
+                  requiredDuringSchedulingIgnoredDuringExecution:
+                    nodeSelectorTerms:
+                    - matchExpressions:
+                      - key: kubernetes.io/hostname
+                        operator: In
+                        values:
+                        - 172.16.0.37
+            containers:
+                - image: rumia/centos-xfce4:1.0
+                  imagePullPolicy: IfNotPresent
+                  name: xfce4
+                  env:
+                    - name: NVIDIA_DRIVER_CAPABILITIES
+                      value: all
+                  resources: 
+                    limits:
+                        cpu: 2
+                        memory: 2Gi
+                        nvidia.com/gpu: 1
+                        hakur/tty: 1
+                    requests:
+                        cpu: 2
+                        memory: 2Gi
+                  volumeMounts:
+                    - name: xorg-modules
+                      mountPath: /usr/lib64/xorg/modules
+                      readOnly: true
+                  command:
+                    - /start.sh
+            volumes:
+                - name: xorg-modules
+                  hostPath:
+                    path: /usr/lib64/xorg/modules
