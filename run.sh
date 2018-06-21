@@ -1,0 +1,1 @@
+docker run -it --rm --device=/dev/tty0 --name centos-xfce4  -p 5900:5900 -e NVIDIA_DRIVER_CAPABILITIES=all -v /usr/lib64/xorg:/usr/lib64/xorg centos-xfce4
