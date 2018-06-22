@@ -3,6 +3,8 @@ RUN cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.origi
 RUN  yum -y install epel-release \
 	&& mkdir /build
 
+# fake a machine-id , if there is no machine-id , D-Bus will crash
+RUN echo ec1d3819c2134eaa886a91384781d9a6 > /etc/machine-id
 COPY image/etc /etc
 
 COPY image/bin /bin
