@@ -2,8 +2,6 @@
 #create vnc password
 if [[ -z "$VNC_PWD" ]];then
 	VNC_PWD="123456"
-else
-	VNC_PWD="123456"
 fi
 
 
@@ -20,11 +18,23 @@ rm -rf /nvidia-smi-log.xml
 # create x11 config
 
 #if gpu card number attached is 1 , nvidia-xconfig will not automatic set BusID to /etc/X11/xorg.conf at Device Section , it will get no device error when run X , and --preserve-busid flag also not set BusID
+if [[ -z "$DESKTOP_WIDTH" ]];then
+	DESKTOP_WIDTH="1280"
+fi
+
+if [[ -z "$DESKTOP_HEIGHT" ]];then
+	DESKTOP_HEIGHT="720"
+fi
+
+if [[ -z "$DESKTOP_COLOR_DEPTH" ]];then
+	DESKTOP_COLOR_DEPTH="24"
+fi
+
 
 if [ $GPU_NUM -eq 1 ];then
-	nvidia-xconfig -s --use-display-device=None --virtual=1280x720 --depth=24 --allow-glx-with-composite --busid="$BUS_ID"
+	nvidia-xconfig -s --use-display-device=None --virtual="$DESKTOP_WIDTH"x"$DESKTOP_HEIGHT" --depth="$DESKTOP_COLOR_DEPTH" --allow-glx-with-composite --busid="$BUS_ID"
 else
-	nvidia-xconfig -s -a --use-display-device=None --virtual=1280x720 --depth=24 --allow-glx-with-composite
+	nvidia-xconfig -s -a --use-display-device=None --virtual="$DESKTOP_WIDTH"x"$DESKTOP_HEIGHT" --depth="$DESKTOP_COLOR_DEPTH" --allow-glx-with-composite
 fi
 
 #start supervisor
