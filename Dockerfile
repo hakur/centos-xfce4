@@ -11,6 +11,8 @@ COPY image/bin /bin
 
 RUN yum -y install tigervnc-server supervisor xorg-x11-server-Xorg
 #gcc pkgconfig glx-utils kmod
+# install chinese support
+RUN yum install cjkuni-ukai-fonts
 
 
 #RUN yum -y install libmatekbd libmatemixer mate-applets mate-backgrounds mate-control-center mate-control-center-filesystem mate-desktop mate-desktop-libs mate-icon-theme ann apg mate-system-monitor mintmenu
