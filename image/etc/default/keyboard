@@ -7,7 +7,7 @@
 
 XKBMODEL="pc105"
 XKBLAYOUT="us"
-XKBVARIANT="intl"
+XKBVARIANT=""
 XKBOPTIONS=""
 
 # If you don't want to use the XKB layout on the console, you can
